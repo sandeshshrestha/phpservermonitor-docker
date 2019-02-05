@@ -4,7 +4,7 @@ LABEL maintainer="info@SandeshShrestha.com"
 
 RUN docker-php-ext-install pdo pdo_mysql \
 	&& apt-get update \
-	&& apt-get -y install git vim \
+	&& apt-get -y install git vim cron \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \
@@ -21,6 +21,13 @@ RUN set -x \
 	&& cp php.ini-production php.ini \
 	&& sed -i 's/;date.timezone =/date.timezone = UTC/' php.ini
 
+RUN touch /var/log/cron.log \
+        && (crontab -l 2>/dev/null; echo "*/15 * * * * date >> /var//log/cron.log") | crontab - \
+        && (crontab -l 2>/dev/null; echo "*/15 * * * * $(which php) /var/www/html/cron/status.cron.php") | crontab -
+
+COPY foreground /usr/local/bin/foreground
+
 EXPOSE 80
 EXPOSE 443
 
+CMD ["foreground"]
