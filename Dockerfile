@@ -2,9 +2,9 @@ FROM php:7.3-apache
 
 LABEL maintainer="info@SandeshShrestha.com"
 
-RUN docker-php-ext-install pdo pdo_mysql \
+RUN docker-php-ext-install pdo pdo_mysql sockets \
 	&& apt-get update \
-	&& apt-get -y install git vim cron \
+	&& apt-get -y install git vim cron zip unzip \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \
