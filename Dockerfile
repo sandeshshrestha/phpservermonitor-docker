@@ -1,4 +1,4 @@
-FROM php:8.5-apache
+FROM php:8.3-apache
 
 LABEL maintainer="info@SandeshShrestha.com"
 
